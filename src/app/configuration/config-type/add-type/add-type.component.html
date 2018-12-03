@@ -1,5 +1,13 @@
 <div class="main_container">
   <div class="title">Add custom type</div>
+  <add-type-field-node [customType]="customType"
+                       [fieldName]="name"
+                       [dataTypes]="dataTypes">
+
+  </add-type-field-node>
+
+  <view-type-field-node [fieldName]="'name'" [fieldType]="'type'" [customType]="exCustomType"></view-type-field-node>
+
   <div class="name_plus_container">
     <mat-form-field>
       <input matInput placeholder="Name" [(ngModel)]="customType.name">
@@ -16,7 +24,7 @@
 </div>
 <mat-form-field>
   <mat-select placeholder="Type">
-    <mat-option *ngFor="let dataType of dataTypes | async" [value]="dataType.name">
+    <mat-option *ngFor="let dataType of dataTypes" [value]="dataType.name">
       {{dataType.name}}
     </mat-option>
   </mat-select>

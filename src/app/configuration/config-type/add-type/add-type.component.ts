@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CustomType} from '../../../shared/model/configuration/config-type/custom-type';
 import {BaseType} from '../../../shared/model/configuration/config-type/base-type';
 import {DataTypeService} from '../service/data-type.service';
+import {NumberType} from '../../../shared/model/configuration/config-type/number-type';
 
 @Component({
   selector: 'add-type',
@@ -13,10 +14,14 @@ export class AddTypeComponent implements OnInit {
   dataTypes;
   customType: CustomType = new CustomType('', '', new Map<string, BaseType>());
 
+  exFields = new Map().set('InMin', NumberType).set('InMax', NumberType).set('OutMin', NumberType).set('OutMax', NumberType).set('In', NumberType);
+
+  exCustomType: CustomType = new CustomType('id-123', 'scale', this.exFields);
+
   constructor(private dataTypeService: DataTypeService) { }
 
   ngOnInit() {
-    this.dataTypes = this.dataTypeService.getDataTypes();
+    this.dataTypeService.getDataTypes().subscribe(types => this.dataTypes = types);
   }
 
 

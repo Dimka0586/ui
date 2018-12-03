@@ -1,0 +1,12 @@
+<div>
+  <mat-form-field>
+    <input matInput placeholder="Name" [(ngModel)]="customType[fieldName]">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Type">
+      <mat-option *ngFor="let dataType of dataTypes" [value]="dataType.name">
+        {{dataType.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

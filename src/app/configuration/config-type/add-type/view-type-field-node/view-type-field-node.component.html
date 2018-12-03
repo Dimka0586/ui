@@ -1,0 +1,8 @@
+<div class="main_container">
+  <div *ngFor="let field of getKeys(customType.fields)">
+    <div>{{field}}</div>
+    <div>{{customType.fields.get(field).name}}</div>
+  </div>
+  <div class="field_name">{{fieldName}}</div>
+  <div class="field_type">{{fieldType}}</div>
+</div>
