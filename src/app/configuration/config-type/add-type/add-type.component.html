@@ -1,0 +1,23 @@
+<div class="main_container">
+  <div class="title">Add custom type</div>
+  <div class="name_plus_container">
+    <mat-form-field>
+      <input matInput placeholder="Name" [(ngModel)]="customType.name">
+    </mat-form-field>
+    <button mat-raised-button color="primary" color="warm">+</button>
+  </div>
+  <button class="add_field" (click)="addField()">+</button>
+  <!--<div *ngFor="let key of getKeys(type.fields)" class="field_container">
+    <input [(ngModel)]="type.fields.get(key).name">
+    <div>{{key}}</div>
+  </div>-->
+
+  <button (click)="getDataTypes()">Data Types</button>
+</div>
+<mat-form-field>
+  <mat-select placeholder="Type">
+    <mat-option *ngFor="let dataType of dataTypes | async" [value]="dataType.name">
+      {{dataType.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
