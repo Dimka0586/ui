@@ -2,7 +2,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatTreeModule
+} from '@angular/material';
 import {AddTypeComponent} from './add-type/add-type.component';
 import {DataTypeService} from './service/data-type.service';
 import { AddTypeFieldNodeComponent } from './add-type/add-type-field-node/add-type-field-node.component';
@@ -24,7 +32,10 @@ const routes: Routes = [
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    MatInputModule
+    MatInputModule,
+    MatTreeModule,
+    MatIconModule,
+    MatButtonModule
   ],
   exports: [
     AddTypeComponent
