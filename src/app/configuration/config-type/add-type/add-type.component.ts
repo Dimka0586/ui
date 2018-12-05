@@ -6,12 +6,14 @@ import {NumberType} from '../../../shared/model/configuration/config-type/number
 import {MatTreeFlatDataSource, MatTreeNestedDataSource} from '@angular/material';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {BehaviorSubject, of} from 'rxjs';
+import {SimpleType} from '../../../shared/model/configuration/config-type/simple-type';
 
-export class CustomTypeFieldNode {
-  children: CustomTypeFieldNode[];
-  fieldName: string;
-  type: string;
-}
+/*export class CustomTypeFieldNode {
+
+  constructor(public fieldName: string, public customType: CustomType) {}
+}*/
+
+
 
 @Component({
   selector: 'add-type',
@@ -20,24 +22,26 @@ export class CustomTypeFieldNode {
 })
 export class AddTypeComponent implements OnInit {
 
-  dataTypes;
-  customType: CustomType = new CustomType('', '', new Map<string, BaseType>());
+  customType: CustomType = new CustomType('', 'jkjk', new Map<string, CustomType>().set('in', new CustomType('', 'number')));
 
-  exFields = new Map().set('InMin', NumberType).set('InMax', NumberType).set('OutMin', NumberType).set('OutMax', NumberType).set('In', NumberType);
+  dataSource: MatTreeNestedDataSource<Map<string, CustomType>>;
+  treeControl: NestedTreeControl<Map<string, CustomType>>;
+  dataChange: BehaviorSubject<Map<string, CustomType>[]> = new BehaviorSubject<Map<string, CustomType>[]>([])
 
-  exCustomType: CustomType = new CustomType('id-123', 'scale', this.exFields);
+  customTypes: CustomType[] = [];
+  simpleTypes: SimpleType<BaseType>[];
 
-  dataSource: MatTreeNestedDataSource<CustomTypeFieldNode>;
-  treeControl: NestedTreeControl<CustomTypeFieldNode>;
-  dataChange: BehaviorSubject<CustomTypeFieldNode[]> = new BehaviorSubject<CustomTypeFieldNode[]>([])
 
   constructor(private dataTypeService: DataTypeService) {
-    this.dataSource = new MatTreeNestedDataSource<CustomTypeFieldNode>();
-    this.treeControl = new NestedTreeControl<CustomTypeFieldNode>(this._getChildren);
+    console.log('customType: ', this.customType);
+    this.dataSource = new MatTreeNestedDataSource<Map<string, CustomType>>();
+    this.treeControl = new NestedTreeControl<Map<string, CustomType>>(this._getChildren);
 
     this.dataChange.subscribe(data => this.dataSource.data = data);
 
-    this.dataChange.next([
+    this.dataChange.next([new Map<string, CustomType>().set(undefined, this.customType)]);
+
+    /*this.dataChange.next([
       {
         fieldName: 'in',
         type: 'number',
@@ -64,15 +68,29 @@ export class AddTypeComponent implements OnInit {
           },
         ]
       }
-    ]);
+    ]);*/
   }
 
-  private _getChildren = (node: CustomTypeFieldNode) => {
+  /*private _getChildren = (node: CustomTypeFieldNode) => {
     return of(node.children);
+  }*/
+
+  private _getChildren = (node: Map<string, CustomType>) => {
+    console.log('getChildren: ', node);
+    const map = new Map<string, CustomType>();
+    if (node.size > 1) {
+      this.getKeys(node).forEach((key: string) => {
+        if (!!key) {
+          map.set(key, node.get(key));
+        }
+      });
+    }
+
+    return of(map);
   }
 
   ngOnInit() {
-    this.dataTypeService.getDataTypes().subscribe(types => this.dataTypes = types);
+    this.dataTypeService.getDataTypes().subscribe((types: SimpleType<BaseType>[]) => this.simpleTypes = types);
   }
 
 
@@ -88,8 +106,20 @@ export class AddTypeComponent implements OnInit {
     this.dataTypeService.getDataTypes().subscribe(data => console.log(data));
   }
 
-  hasNestedChild = (_: number, nodeData: CustomTypeFieldNode) => {
+  /*hasNestedChild = (_: number, nodeData: CustomTypeFieldNode) => {
     return nodeData.children.length > 0;
+  }*/
+
+  hasNestedChild = (_: number, nodeData: Map<string, CustomType>) => {
+    console.log('hasNestedChild: ', nodeData);
+    return nodeData.size > 1;
+  }
+
+  addType(): CustomType {
+    const newCustomType = JSON.parse(JSON.stringify(this.customType));
+    this.customTypes.push(newCustomType);
+    // this.dataChange.next(this.customTypes);
+    return newCustomType;
   }
 
 }
