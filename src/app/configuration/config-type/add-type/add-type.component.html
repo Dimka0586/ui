@@ -1,12 +1,12 @@
 <div>Custom types</div>
 
 <div class="new_custom_type_container">
-  <form>
+  <!--<form>-->
     <mat-form-field class="new_custom_type_input">
-      <input matInput placeholder="Name">
+      <input matInput placeholder="Name" [(ngModel)]="newDataTypeName">
     </mat-form-field>
     <button mat-icon-button (click)="addType()"><mat-icon>add</mat-icon></button>
-  </form>
+  <!--</form>-->
 </div>
 
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
@@ -14,7 +14,7 @@
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
     <li class="mat-tree-node">
       <button mat-icon-button disabled></button>
-      {{node.name}}
+      --{{node.field}}: {{node.name}}--
     </li>
   </mat-tree-node>
 
@@ -27,7 +27,7 @@
             {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}>
           </mat-icon>
         </button>
-        {{node.name}}123
+        {{node.name}}
       </div>
       <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
         <ng-container matTreeNodeOutlet></ng-container>
@@ -38,7 +38,7 @@
 
 </mat-tree>
 
-<div *ngFor="let simpleType of simpleTypes">{{simpleType.name}}</div>
+
 
 
 
